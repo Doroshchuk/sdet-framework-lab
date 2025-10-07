@@ -1,6 +1,6 @@
 from typing import Self
 from playwright.sync_api import Locator, Page
-from src.pages.login_page import LoginPage
+from src.sauce_demo_ui.pages.login_page import LoginPage
 
 
 class HomePage:

@@ -1,6 +1,6 @@
 from playwright.sync_api import sync_playwright, expect
 import pytest
-from src.pages.home_page import HomePage
+from src.sauce_demo_ui.pages.home_page import HomePage
 
 
 @pytest.fixture(scope="session")
