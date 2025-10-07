@@ -1,5 +1,6 @@
 from playwright.sync_api import sync_playwright, expect
 import pytest
+from src.pages.home_page import HomePage
 
 
 @pytest.fixture(scope="session")
@@ -18,13 +19,9 @@ def browser_context_args(browser_context_args):
     }
 
 def test_navigation_to_login_page_success(page):
-    homepage_url = "https://sauce-demo.myshopify.com"
+    home_page_url = "https://sauce-demo.myshopify.com"
     login_page_url = "https://sauce-demo.myshopify.com/account/login"
     
-    page.goto(homepage_url)
-
-    login_link = page.get_by_role(role="link", name="Log In")
-    email_input = page.get_by_label("Email Address")
-    login_link.click()
-    expect(page).to_have_url(login_page_url)
-    expect(email_input).to_be_visible()
+    home_page = HomePage(page)
+    home_page.navigate(home_page_url)
+    home_page.navigate_to_login_page().assert_loaded(login_page_url)
