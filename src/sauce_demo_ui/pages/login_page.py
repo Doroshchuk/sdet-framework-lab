@@ -1,5 +1,6 @@
 from typing import Self
 from playwright.sync_api import Locator, Page, expect
+from pydantic import AnyHttpUrl
 
 
 class LoginPage:
@@ -12,7 +13,7 @@ class LoginPage:
     def email_input(self) -> Locator:
         return self.page.get_by_label("Email Address")
 
-    def assert_loaded(self, base_url: str) -> Self:
+    def assert_loaded(self, base_url: AnyHttpUrl) -> Self:
         expect(self.page).to_have_url(f"{base_url}{self.path}")
         expect(self.email_input).to_be_visible()
         return self
