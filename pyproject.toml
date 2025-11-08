@@ -14,7 +14,8 @@ dependencies = [
     "pytest-playwright==0.7.1",
     "playwright==1.55.0",
     "python-dotenv==1.1.0",
-    "dotenv==0.9.9"
+    "dotenv==0.9.9",
+    "loguru==0.7.3"
 ]
 
 [tool.pytest.ini_options]
