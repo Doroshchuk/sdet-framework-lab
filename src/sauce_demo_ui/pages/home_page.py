@@ -8,20 +8,20 @@ if TYPE_CHECKING:
 
 
 class HomePage:
-    def __init__(self, page: Page, log: "Logger"):
+    def __init__(self, page: Page, logger: "Logger"):
         self.page = page
-        self.log = log
+        self.logger = logger
 
     @property
     def login_link(self) -> Locator:
         return self.page.get_by_role(role="link", name="Log In")
 
     def navigate_to_login_page(self) -> LoginPage:
-        self.log.info(f"Navigating to login page via link on thehome page.")
+        self.logger.info(f"Navigating to login page via link on thehome page.")
         self.login_link.click()
-        return LoginPage(self.page, self.log)
+        return LoginPage(self.page, self.logger)
 
     def navigate(self, home_page_url) -> Self:
-        self.log.info(f"Navigating to home page: {home_page_url}")
+        self.logger.info(f"Navigating to home page: {home_page_url}")
         self.page.goto(home_page_url)
         return self

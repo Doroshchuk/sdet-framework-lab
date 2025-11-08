@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from loguru._logger import Logger
-    
+
 
 @pytest.fixture(scope="session")
 def browser_type_launch_args(browser_type_launch_args):
@@ -28,7 +28,7 @@ def settings() -> UiSettings:
     return ConfigManager().ui()
 
 @pytest.fixture(scope="session")
-def log() -> "Logger":
+def ui_logger() -> "Logger":
     """Provides the logger for the entire test session."""
     logger.info("Setting up logger for the entire test session.")
     return logger

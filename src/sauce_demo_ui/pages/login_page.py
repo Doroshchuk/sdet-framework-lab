@@ -10,16 +10,16 @@ if TYPE_CHECKING:
 class LoginPage:
     path = "/account/login"
 
-    def __init__(self, page: Page, log: "Logger"):
+    def __init__(self, page: Page, logger: "Logger"):
         self.page = page
-        self.log = log
+        self.logger = logger
 
     @property
     def email_input(self) -> Locator:
         return self.page.get_by_label("Email Address")
 
     def assert_loaded(self, base_url: AnyHttpUrl) -> Self:
-        self.log.info(f"Asserting login page is loaded.")
+        self.logger.info(f"Asserting login page is loaded.")
         expect(self.page).to_have_url(f"{base_url}{self.path}")
         expect(self.email_input).to_be_visible()
         return self
