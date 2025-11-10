@@ -17,7 +17,7 @@ class HomePage:
         return self.page.get_by_role(role="link", name="Log In")
 
     def navigate_to_login_page(self) -> LoginPage:
-        self.logger.info(f"Navigating to login page via link on thehome page.")
+        self.logger.info(f"Navigating to login page via link on the home page.")
         self.login_link.click()
         return LoginPage(self.page, self.logger)
 
