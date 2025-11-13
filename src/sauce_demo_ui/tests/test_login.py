@@ -9,6 +9,6 @@ if TYPE_CHECKING:
 
 @log_flow("Check navigation from the home page to login.")
 def test_navigation_to_login_page_success(page: Page, settings: UiSettings, ui_logger: "Logger"):
-    home_page = HomePage(page, ui_logger)
-    home_page.navigate(settings.base_url)
-    home_page.navigate_to_login_page().assert_loaded(settings.base_url)
+    home_page = HomePage(page, settings.base_url, ui_logger)
+    home_page.open()
+    home_page.navigate_to_login_page().assert_loaded()
