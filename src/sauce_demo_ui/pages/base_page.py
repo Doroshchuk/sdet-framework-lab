@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import TYPE_CHECKING
 from common.utils.log_action import LogLevelType
 from playwright.sync_api import Page, Locator, expect
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class BasePage:
-    def __init__(self, page: Page, base_url: AnyHttpUrl, logger: "Logger"):
+    def __init__(self, page: Page, base_url: AnyHttpUrl, logger: Logger):
         self.page = page
         self.base_url = base_url
         self.logger = logger

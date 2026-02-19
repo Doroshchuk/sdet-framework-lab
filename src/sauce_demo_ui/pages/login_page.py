@@ -1,3 +1,4 @@
+from __future__ import annotations
 from sauce_demo_ui.pages.base_page import BasePage
 from sauce_demo_ui.utils.log_action import log_step
 from typing import Self
@@ -12,7 +13,7 @@ if TYPE_CHECKING:
 class LoginPage(BasePage):
     path = "/account/login"
 
-    def __init__(self, page: Page, base_url: AnyHttpUrl, logger: "Logger"):
+    def __init__(self, page: Page, base_url: AnyHttpUrl, logger: Logger):
         super().__init__(page, base_url, logger)
 
     @property

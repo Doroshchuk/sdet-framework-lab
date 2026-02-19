@@ -1,3 +1,4 @@
+from __future__ import annotations
 from functools import wraps
 from typing import TYPE_CHECKING, Callable
 
@@ -15,7 +16,7 @@ class LogLevelType:
     WARNING = "warning"
     ERROR = "error"
 
-def make_log_action(logger: "Logger", action: LogActionType):
+def make_log_action(logger: Logger, action: LogActionType):
     def log_action(description: str | Callable, level: LogLevelType = LogLevelType.INFO):
         def decorator(func):
             @wraps(func)

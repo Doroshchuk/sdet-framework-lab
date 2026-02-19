@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Self
 from playwright.sync_api import Locator, Page
 from pydantic import AnyHttpUrl
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class HomePage(BasePage):
-    def __init__(self, page: Page, base_url: AnyHttpUrl, logger: "Logger"):
+    def __init__(self, page: Page, base_url: AnyHttpUrl, logger: Logger):
         super().__init__(page, base_url, logger)
 
     @property
