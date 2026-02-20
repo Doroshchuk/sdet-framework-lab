@@ -25,7 +25,11 @@ def make_log_action(logger: Logger, action: LogActionType):
                     try:
                         # Pass the same args the method receives
                         msg = description(*args, **kwargs)
-                    except Exception:
+                    except Exception as e:
+                        logger.warning(
+                            f"[{action.upper()}] Message builder failed for {func.__name__}: {e}. "
+                            "Falling back to function name."
+                        )
                         msg = f"{func.__name__}()"     # fallback
                 else:
                     msg = description
