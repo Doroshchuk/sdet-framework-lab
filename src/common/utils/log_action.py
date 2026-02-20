@@ -1,16 +1,16 @@
 from __future__ import annotations
 from functools import wraps
 from typing import TYPE_CHECKING, Callable
-from enum import Enum
+from enum import StrEnum
 
 if TYPE_CHECKING:
     from loguru import Logger
 
-class LogActionType(Enum):
+class LogActionType(StrEnum):
     FLOW = "flow"
     STEP = "step"
 
-class LogLevelType(Enum):
+class LogLevelType(StrEnum):
     TRACE = "trace"
     DEBUG = "debug"
     INFO = "info"
@@ -28,7 +28,7 @@ def make_log_action(logger: Logger, action: LogActionType):
                         msg = description(*args, **kwargs)
                     except TypeError as e:
                         logger.warning(
-                            f"[{action.value.upper()}] Message builder failed for {func.__name__}: {e}. "
+                            f"[{action.upper()}] Message builder failed for {func.__name__}: {e}. "
                             "Falling back to function name."
                         )
                         msg = f"{func.__name__}()"     # fallback
@@ -37,10 +37,10 @@ def make_log_action(logger: Logger, action: LogActionType):
 
                 # Run function
                 try:
-                    logger.log(level.value.upper(), f"[{action.value.upper()}]: {msg}")
+                    logger.log(level.upper(), f"[{action.upper()}]: {msg}")
                     return func(*args, **kwargs)
                 except Exception as e:
-                    logger.error(f"[{action.value.upper()} FAILED] {msg} → {e}")
+                    logger.error(f"[{action.upper()} FAILED] {msg} → {e}")
                     raise
             return wrapper
         return decorator
