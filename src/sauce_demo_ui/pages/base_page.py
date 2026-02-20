@@ -3,7 +3,6 @@ from typing import TYPE_CHECKING
 from common.utils.log_action import LogLevelType
 from playwright.sync_api import Page, Locator, expect
 from pydantic import AnyHttpUrl
-from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from typing import Self
 from sauce_demo_ui.utils.log_action import log_step
 
@@ -26,79 +25,50 @@ class BasePage:
     def click(self, target: str | Locator, description: str | None = None) -> Self:
         """Click either a Locator or a string Selector."""
         
-        description = self._describe(target, description)
-        try:
-            if isinstance(target, Locator):
-                target.click()
-            else:
-                self.page.click(target)
-            self.logger.debug(f"[{self.__class__.__name__}] Click succeeded: {description}")
-            return self
-        except PlaywrightTimeoutError as e:
-            self.logger.error(
-                f"[{self.__class__.__name__}] Failed to click {description} → {e}"
-            )
-            raise
+        if isinstance(target, Locator):
+            target.click()
+        else:
+            self.page.click(target)
+        return self
 
     @log_step(lambda self, target, value, description=None, **_: f"Filling {self._describe(target, description)} with {value}.")
     def fill(self, target: str | Locator, value: str, description: str | None = None) -> Self:
         """Fill input using a Locator or a string Selector."""
 
-        description = self._describe(target, description)
-        try:
-            if isinstance(target, Locator):
-                target.fill(value)
-            else:
-                self.page.fill(target, value)
-            self.logger.debug(f"[{self.__class__.__name__}] Fill succeeded: {description}")
-            return self
-        except PlaywrightTimeoutError as e:
-            self.logger.error(
-                f"[{self.__class__.__name__}] Failed to fill {description} with {value} → {e}"
-            )
-            raise
+        if isinstance(target, Locator):
+            target.fill(value)
+        else:
+            self.page.fill(target, value)
+        return self
 
     @log_step(lambda self, target, timeout_seconds=5, description=None, **_: f"Waiting for {self._describe(target, description)} to be visible.", level=LogLevelType.DEBUG)
     def wait_until_visible(self, target: str | Locator, timeout_seconds: int = 5, description: str | None = None) -> Self:
         """Wait for an element to be visible."""
         
         timeout_milliseconds = timeout_seconds * 1000
-        description = self._describe(target, description)
-        try:
-            if isinstance(target, Locator):
-                target.wait_for(state="visible", timeout=timeout_milliseconds)
-            else:
-                self.page.wait_for_selector(selector=target, state="visible", timeout=timeout_milliseconds)
-            self.logger.debug(f"[{self.__class__.__name__}] Wait succeeded: {description}")
-            return self
-        except PlaywrightTimeoutError as e:
-            self.logger.error(
-                f"[{self.__class__.__name__}] Timeout while waiting for {description} to be visible → {e}"
-            )
-            raise
+        if isinstance(target, Locator):
+            target.wait_for(state="visible", timeout=timeout_milliseconds)
+        else:
+            self.page.wait_for_selector(selector=target, state="visible", timeout=timeout_milliseconds)
+        return self
 
     @log_step(lambda self, target, description=None, **_: f"Asserting {self._describe(target, description)} is visible.")
     def assert_visible(self, target: str | Locator,  description: str | None = None) -> Self:
-        description = self._describe(target, description)
-        try:
-            if isinstance(target, Locator):
-                expect(target).to_be_visible()
-            else:
-                expect(self.page.locator(target)).to_be_visible()
-            return self
-        except PlaywrightTimeoutError as e:
-            self.logger.error(f"[{self.__class__.__name__}] Timeout while waiting for element: {description} → {e}")
-            raise
+        """Assert an element is visible."""
+
+        if isinstance(target, Locator):
+            expect(target).to_be_visible()
+        else:
+            expect(self.page.locator(target)).to_be_visible()
+        return self
 
     @log_step(lambda self, path="", **_: f"Asserting page`s url is {self.base_url}{path}.")
     def assert_url(self, path: str = "") -> Self:
+        """Assert a page`s url."""
+        
         url = f"{self.base_url}{path}"
-        try:
-            expect(self.page).to_have_url(url)
-            return self
-        except PlaywrightTimeoutError as e:
-            self.logger.error(f"[{self.__class__.__name__}] Timeout while waiting for url: {url} → {e}")
-            raise
+        expect(self.page).to_have_url(url)
+        return self
     
     def _describe(self, target: str | Locator, description: str | None = None) -> str:
         if description:
