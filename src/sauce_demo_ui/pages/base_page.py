@@ -17,13 +17,13 @@ class BasePage:
         self.base_url = base_url
         self.logger = logger
 
-    @log_step(lambda self, *args, path="", **kwargs: f"Opening {self.base_url}{path}.")
+    @log_step(lambda self, path="", **_: f"Opening {self.base_url}{path}.")
     def open(self, path: str = "") -> Self:
         self.page.goto(f"{self.base_url}{path}")
         return self
 
-    @log_step(lambda self, target, *args, description=None, **kwargs: f"Clicking {self._describe(target, description)}.")
-    def click(self, target: str | Locator, description: str = None) -> Self:
+    @log_step(lambda self, target, description=None, **_: f"Clicking {self._describe(target, description)}.")
+    def click(self, target: str | Locator, description: str | None = None) -> Self:
         """Click either a Locator or a string Selector."""
         
         description = self._describe(target, description)
@@ -40,8 +40,8 @@ class BasePage:
             )
             raise
 
-    @log_step(lambda self, target, value, *args, description=None, **kwargs: f"Filling {self._describe(target, description)} with {value}.")
-    def fill(self, target: str | Locator, value: str, description: str = None) -> Self:
+    @log_step(lambda self, target, value, description=None, **_: f"Filling {self._describe(target, description)} with {value}.")
+    def fill(self, target: str | Locator, value: str, description: str | None = None) -> Self:
         """Fill input using a Locator or a string Selector."""
 
         description = self._describe(target, description)
@@ -58,8 +58,8 @@ class BasePage:
             )
             raise
 
-    @log_step(lambda self, target, *args, description=None, **kwargs: f"Waiting for {self._describe(target, description)} to be visible.", level=LogLevelType.DEBUG)
-    def wait_until_visible(self, target: str | Locator, timeout_seconds: int = 5, description: str = None) -> Self:
+    @log_step(lambda self, target, timeout_seconds=5, description=None, **_: f"Waiting for {self._describe(target, description)} to be visible.", level=LogLevelType.DEBUG)
+    def wait_until_visible(self, target: str | Locator, timeout_seconds: int = 5, description: str | None = None) -> Self:
         """Wait for an element to be visible."""
         
         timeout_milliseconds = timeout_seconds * 1000
@@ -77,8 +77,8 @@ class BasePage:
             )
             raise
 
-    @log_step(lambda self, target, *args, description=None, **kwargs: f"Asserting {self._describe(target, description)} is visible.")
-    def assert_visible(self, target: str | Locator,  description: str = None) -> Self:
+    @log_step(lambda self, target, description=None, **_: f"Asserting {self._describe(target, description)} is visible.")
+    def assert_visible(self, target: str | Locator,  description: str | None = None) -> Self:
         description = self._describe(target, description)
         try:
             if isinstance(target, Locator):
@@ -90,7 +90,7 @@ class BasePage:
             self.logger.error(f"[{self.__class__.__name__}] Timeout while waiting for element: {description} → {e}")
             raise
 
-    @log_step(lambda self, *args, path="", **kwargs: f"Asserting page`s url is {self.base_url}{path}.")
+    @log_step(lambda self, path="", **_: f"Asserting page`s url is {self.base_url}{path}.")
     def assert_url(self, path: str = "") -> Self:
         url = f"{self.base_url}{path}"
         try:
@@ -100,9 +100,10 @@ class BasePage:
             self.logger.error(f"[{self.__class__.__name__}] Timeout while waiting for url: {url} → {e}")
             raise
     
-    def _describe(self, target: str | Locator, description: str = None):
+    def _describe(self, target: str | Locator, description: str | None = None) -> str:
         if description:
             return description
+        # best-effort: Playwright private internals, may change between versions
         if isinstance(target, Locator):
             internal_selector = getattr(getattr(target, "_impl_obj", None), "_selector", None)
             if internal_selector:
