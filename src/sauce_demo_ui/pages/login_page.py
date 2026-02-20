@@ -1,8 +1,8 @@
 from __future__ import annotations
-from sauce_demo_ui.pages.base_page import BasePage
-from sauce_demo_ui.utils.log_action import log_step
+from sauce_demo_ui.framework.ui.base_page import BasePage
+from sauce_demo_ui.framework.logging.log_action import log_step
 from typing import Self
-from playwright.sync_api import Locator, Page, expect
+from playwright.sync_api import Locator, Page
 from pydantic import AnyHttpUrl
 from typing import TYPE_CHECKING
 

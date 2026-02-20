@@ -1,7 +1,7 @@
 import json
 import os
 from pathlib import Path
-from src.sauce_demo_ui.utils.ui_settings import UiSettings
+from src.sauce_demo_ui.framework.config.ui_settings import UiSettings
 from typing import Optional
 
 

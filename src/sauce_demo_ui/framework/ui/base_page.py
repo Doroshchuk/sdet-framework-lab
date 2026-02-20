@@ -4,7 +4,7 @@ from common.utils.log_action import LogLevelType
 from playwright.sync_api import Page, Locator, expect
 from pydantic import AnyHttpUrl
 from typing import Self
-from sauce_demo_ui.utils.log_action import log_step
+from sauce_demo_ui.framework.logging.log_action import log_step
 
 if TYPE_CHECKING:
     from loguru import Logger

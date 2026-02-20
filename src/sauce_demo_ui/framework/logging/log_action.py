@@ -1,5 +1,5 @@
 from common.utils.log_action import make_log_action, LogActionType
-from sauce_demo_ui.utils.logger import logger
+from sauce_demo_ui.framework.logging.logger import logger
 
 
 log_step = make_log_action(logger, LogActionType.STEP)

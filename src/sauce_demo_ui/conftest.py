@@ -1,7 +1,7 @@
 import pytest
-from src.sauce_demo_ui.utils.ui_settings import UiSettings
+from src.sauce_demo_ui.framework.config.ui_settings import UiSettings
 from src.common.helpers.config_manager import ConfigManager
-from src.sauce_demo_ui.utils.logger import logger
+from src.sauce_demo_ui.framework.logging.logger import logger
 from typing import TYPE_CHECKING
 from pytest import FixtureRequest
 

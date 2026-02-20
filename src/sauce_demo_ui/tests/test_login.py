@@ -1,7 +1,7 @@
 from __future__ import annotations
-from sauce_demo_ui.utils.log_action import log_flow
+from sauce_demo_ui.framework.logging.log_action import log_flow
 from src.sauce_demo_ui.pages.home_page import HomePage
-from src.sauce_demo_ui.utils.ui_settings import UiSettings
+from src.sauce_demo_ui.framework.config.ui_settings import UiSettings
 from playwright.sync_api import Page
 from typing import TYPE_CHECKING
 
