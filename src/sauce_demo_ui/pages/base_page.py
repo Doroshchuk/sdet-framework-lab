@@ -8,7 +8,7 @@ from typing import Self
 from sauce_demo_ui.utils.log_action import log_step
 
 if TYPE_CHECKING:
-    from loguru._logger import Logger
+    from loguru import Logger
 
 
 class BasePage:

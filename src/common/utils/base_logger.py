@@ -1,7 +1,12 @@
+from __future__ import annotations
 from loguru import logger
 import os
+from typing import TYPE_CHECKING
 
-def configure_logger(name: str, log_level: str = "INFO"):
+if TYPE_CHECKING:
+    from loguru import Logger
+
+def configure_logger(name: str, log_level: str = "INFO") -> Logger:
     """Configure a named logger (ui/api/etc.) and return the global Loguru instance."""
     log_dir = os.path.join(os.getcwd(), f"logs/{name}")
     os.makedirs(log_dir, exist_ok=True)

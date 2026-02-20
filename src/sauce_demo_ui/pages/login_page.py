@@ -7,7 +7,7 @@ from pydantic import AnyHttpUrl
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from loguru._logger import Logger
+    from loguru import Logger
 
 
 class LoginPage(BasePage):

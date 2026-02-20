@@ -6,7 +6,7 @@ from playwright.sync_api import Page
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from loguru._logger import Logger
+    from loguru import Logger
 
 @log_flow("Check navigation from the home page to login.")
 def test_navigation_to_login_page_success(page: Page, settings: UiSettings, ui_logger: Logger):

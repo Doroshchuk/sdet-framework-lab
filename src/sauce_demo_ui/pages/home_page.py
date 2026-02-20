@@ -8,7 +8,7 @@ from src.sauce_demo_ui.pages.login_page import LoginPage
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from loguru._logger import Logger
+    from loguru import Logger
 
 
 class HomePage(BasePage):

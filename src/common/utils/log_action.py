@@ -3,7 +3,7 @@ from functools import wraps
 from typing import TYPE_CHECKING, Callable
 
 if TYPE_CHECKING:
-    from loguru._logger import Logger
+    from loguru import Logger
 
 class LogActionType:
     FLOW = "flow"
