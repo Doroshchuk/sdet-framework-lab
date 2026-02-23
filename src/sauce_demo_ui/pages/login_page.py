@@ -2,9 +2,10 @@ from __future__ import annotations
 from sauce_demo_ui.framework.ui.base_page import BasePage
 from sauce_demo_ui.framework.logging.log_action import log_step
 from typing import Self
-from playwright.sync_api import Locator, Page
+from playwright.sync_api import Page
 from pydantic import AnyHttpUrl
 from typing import TYPE_CHECKING
+from sauce_demo_ui.framework.ui.element import UiElement
 
 if TYPE_CHECKING:
     from loguru import Logger
@@ -17,8 +18,11 @@ class LoginPage(BasePage):
         super().__init__(page, base_url, logger)
 
     @property
-    def email_input(self) -> Locator:
-        return self.page.get_by_label("Email Address")
+    def email_input(self) -> UiElement:
+        return UiElement(
+            locator=self.page.get_by_label("Email Address"),
+            description="Email Address input"
+        )
 
     @log_step("Asserting login page is loaded.")
     def assert_loaded(self) -> Self:

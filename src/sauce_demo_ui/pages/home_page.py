@@ -1,9 +1,10 @@
 from __future__ import annotations
 from typing import Self
-from playwright.sync_api import Locator, Page
+from playwright.sync_api import Page
 from pydantic import AnyHttpUrl
 from sauce_demo_ui.framework.ui.base_page import BasePage
 from sauce_demo_ui.framework.logging.log_action import log_step
+from sauce_demo_ui.framework.ui.element import UiElement
 from src.sauce_demo_ui.pages.login_page import LoginPage
 from typing import TYPE_CHECKING
 
@@ -16,8 +17,11 @@ class HomePage(BasePage):
         super().__init__(page, base_url, logger)
 
     @property
-    def login_link(self) -> Locator:
-        return self.page.get_by_role(role="link", name="Log In")
+    def login_link(self) -> UiElement:
+        return UiElement(
+            locator=self.page.get_by_role(role="link", name="Log In"), 
+            description="Log In link"
+        )
 
     @log_step("Navigating to login page via link on the home page.")
     def navigate_to_login_page(self) -> LoginPage:
