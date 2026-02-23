@@ -1,10 +1,9 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from common.utils.log_action import LogLevelType
 from playwright.sync_api import Page, expect
 from pydantic import AnyHttpUrl
 from typing import Self
-from sauce_demo_ui.framework.logging.log_action import log_step
+from sauce_demo_ui.framework.logging.log_action import log_step, LogLevelType
 from sauce_demo_ui.framework.ui.element import UiElement
 
 if TYPE_CHECKING:
