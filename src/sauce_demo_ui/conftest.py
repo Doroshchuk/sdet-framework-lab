@@ -1,6 +1,7 @@
 import pytest
+from common.helpers.config_manager import ConfigManager
+from common.helpers.enums import SettingsTypeEnum
 from src.sauce_demo_ui.framework.config.ui_settings import UiSettings
-from src.common.helpers.config_manager import ConfigManager
 from src.sauce_demo_ui.framework.logging.logger import logger
 from typing import TYPE_CHECKING
 from pytest import FixtureRequest
@@ -26,7 +27,12 @@ def browser_context_args(browser_context_args):
 
 @pytest.fixture(scope="session")
 def settings() -> UiSettings:
-    return ConfigManager().ui()
+    return ConfigManager.load(
+        env_var="SETTINGS_PATH_UI",
+        default_path="config/settings.sauce_demo_ui.json",
+        settings_type=SettingsTypeEnum.UI,
+        parser=lambda data: UiSettings(**data).normalized()
+    )
 
 @pytest.fixture(scope="session")
 def ui_logger() -> "Logger":
