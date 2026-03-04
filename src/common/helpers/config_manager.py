@@ -2,7 +2,7 @@ import json
 import os
 from pathlib import Path
 from common.helpers.enums import SettingsTypeEnum
-from typing import Callable, TypeVar
+from typing import Callable, TypeVar, cast
 
 SettingsType = TypeVar("SettingsType")
 
@@ -19,7 +19,7 @@ class ConfigManager:
         parser: Callable[[dict], SettingsType]
         ) -> SettingsType:
         if settings_type in cls._settings:
-            return cls._settings[settings_type]
+            return cast(SettingsType, cls._settings[settings_type])
 
         path_str = os.getenv(env_var, default_path)
         path = Path(path_str if Path(path_str).is_absolute() else Path.cwd() / path_str)

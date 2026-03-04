@@ -1,3 +1,4 @@
+from __future__ import annotations
 import pytest
 from common.helpers.config_manager import ConfigManager
 from common.helpers.enums import SettingsTypeEnum
@@ -7,7 +8,7 @@ from typing import TYPE_CHECKING
 from pytest import FixtureRequest
 
 if TYPE_CHECKING:
-    from loguru._logger import Logger
+    from loguru import Logger
 
 
 @pytest.fixture(scope="session")
@@ -35,13 +36,13 @@ def settings() -> UiSettings:
     )
 
 @pytest.fixture(scope="session")
-def ui_logger() -> "Logger":
+def ui_logger() -> Logger:
     """Provides the logger for the entire test session."""
     logger.info("Setting up logger for the entire test session.")
     return logger
 
 @pytest.fixture(autouse=True)
-def log_test_start_end(request: FixtureRequest, ui_logger: "Logger"):
+def log_test_start_end(request: FixtureRequest, ui_logger: Logger):
      ui_logger.info(f"=== START TEST: {request.node.name} ===")
      yield
      ui_logger.info(f"=== END TEST: {request.node.name} ===")
