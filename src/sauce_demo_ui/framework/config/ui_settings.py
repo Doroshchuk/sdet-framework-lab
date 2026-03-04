@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, AnyHttpUrl
 from typing import Optional, Self
-from src.common.helpers.enums import EnvironmentEnum
+from common.helpers.enums import EnvironmentEnum
 
 
 class Viewport(BaseModel):

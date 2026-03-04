@@ -1,8 +1,8 @@
 import pytest
 from common.helpers.config_manager import ConfigManager
 from common.helpers.enums import SettingsTypeEnum
-from src.sauce_demo_ui.framework.config.ui_settings import UiSettings
-from src.sauce_demo_ui.framework.logging.logger import logger
+from sauce_demo_ui.framework.config.ui_settings import UiSettings
+from sauce_demo_ui.framework.logging.logger import logger
 from typing import TYPE_CHECKING
 from pytest import FixtureRequest
 

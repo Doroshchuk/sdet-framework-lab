@@ -5,7 +5,7 @@ from pydantic import AnyHttpUrl
 from sauce_demo_ui.framework.ui.base_page import BasePage
 from sauce_demo_ui.framework.logging.log_action import log_step
 from sauce_demo_ui.framework.ui.element import UiElement
-from src.sauce_demo_ui.pages.login_page import LoginPage
+from sauce_demo_ui.pages.login_page import LoginPage
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
