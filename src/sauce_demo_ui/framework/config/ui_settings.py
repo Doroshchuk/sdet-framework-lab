@@ -11,7 +11,7 @@ class UiSettings(BaseModel):
     env: EnvironmentEnum = EnvironmentEnum.LOCAL
     base_url: AnyHttpUrl
     headless: bool = True
-    channel: Optional[str] = None
+    browser_channel: Optional[str] = None
     viewport: Viewport = Field(default_factory=Viewport)
 
     def normalized(self) -> Self:

@@ -2,7 +2,7 @@
     "env": "local",
     "base_url": "https://sauce-demo.myshopify.com",
     "headless": false,
-    "channel": "chrome",
+    "browser_channel": "chrome",
     "viewport": {
         "width": 1920,
         "height": 1080
