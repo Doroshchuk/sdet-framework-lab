@@ -1,11 +1,12 @@
 from __future__ import annotations
+import time
 import pytest
 from common.helpers.config_manager import ConfigManager
 from common.helpers.enums import SettingsTypeEnum
 from sauce_demo_ui.framework.config.ui_settings import UiSettings
 from sauce_demo_ui.framework.logging.logger import logger
 from typing import TYPE_CHECKING
-from pytest import FixtureRequest
+from pytest import CallInfo, FixtureRequest, Item, TestReport
 
 if TYPE_CHECKING:
     from loguru import Logger
@@ -38,11 +39,38 @@ def settings() -> UiSettings:
 @pytest.fixture(scope="session")
 def ui_logger() -> Logger:
     """Provides the logger for the entire test session."""
-    logger.info("Setting up logger for the entire test session.")
+    logger.info("Initializing test session logger.")
     return logger
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item: Item, call: CallInfo[None]):
+    outcome = yield
+    report: TestReport = outcome.get_result()
+    setattr(item, f"rep_{report.when}", report)
 
 @pytest.fixture(autouse=True)
 def log_test_start_end(request: FixtureRequest, ui_logger: Logger):
-     ui_logger.info(f"=== START TEST: {request.node.name} ===")
-     yield
-     ui_logger.info(f"=== END TEST: {request.node.name} ===")
+    test_name = request.node.name
+    start_time = time.perf_counter()
+
+    ui_logger.info(f"=== START TEST: {test_name} ===")
+    yield
+
+    duration_seconds = time.perf_counter() - start_time
+
+    rep_setup = getattr(request.node, "rep_setup", None)
+    rep_call = getattr(request.node, "rep_call", None)
+    rep_teardown = getattr(request.node, "rep_teardown", None)
+
+    if rep_setup and rep_setup.failed:
+        status = "FAILED_IN_SETUP"
+    elif rep_call and rep_call.failed:
+        status = "FAILED"
+    elif rep_teardown and rep_teardown.failed:
+        status = "FAILED_IN_TEARDOWN"
+    elif rep_call and rep_call.skipped:
+        status = "SKIPPED"
+    else:
+        status = "PASSED"
+
+    ui_logger.info(f"=== END TEST: {test_name} | STATUS: {status} | DURATION: {duration_seconds:.2f}s ===")
