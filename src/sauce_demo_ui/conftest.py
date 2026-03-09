@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 @pytest.fixture(scope="session")
-def browser_type_launch_args(browser_type_launch_args, settings: UiSettings):
+def browser_type_launch_args(browser_type_launch_args, settings: UiSettings) -> dict:
     return {
         **browser_type_launch_args,
         "channel": settings.browser_channel,
@@ -21,7 +21,7 @@ def browser_type_launch_args(browser_type_launch_args, settings: UiSettings):
     }
 
 @pytest.fixture(scope="session")
-def browser_context_args(browser_context_args, settings: UiSettings):
+def browser_context_args(browser_context_args, settings: UiSettings) -> dict:
     return {
         **browser_context_args,
         "viewport": settings.viewport.model_dump()
@@ -42,14 +42,14 @@ def ui_logger() -> Logger:
     logger.info("Initializing test session logger.")
     return logger
 
-@pytest.hookimpl(hookwrapper=True)
-def pytest_runtest_makereport(item: Item, call: CallInfo[None]):
+@pytest.hookimpl(hookwrapper=True, tryfirst=True)
+def pytest_runtest_makereport(item: Item, call: CallInfo[None]) -> None:
     outcome = yield
     report: TestReport = outcome.get_result()
     setattr(item, f"rep_{report.when}", report)
 
 @pytest.fixture(autouse=True)
-def log_test_start_end(request: FixtureRequest, ui_logger: Logger):
+def log_test_start_end(request: FixtureRequest, ui_logger: Logger) -> None:
     test_name = request.node.name
     start_time = time.perf_counter()
 
@@ -68,9 +68,12 @@ def log_test_start_end(request: FixtureRequest, ui_logger: Logger):
         status = "FAILED"
     elif rep_teardown and rep_teardown.failed:
         status = "FAILED_IN_TEARDOWN"
-    elif rep_call and rep_call.skipped:
+    elif (rep_setup and rep_setup.skipped) or (rep_call and rep_call.skipped):
         status = "SKIPPED"
     else:
         status = "PASSED"
 
-    ui_logger.info(f"=== END TEST: {test_name} | STATUS: {status} | DURATION: {duration_seconds:.2f}s ===")
+    ui_logger.info(
+        f"=== END TEST: {test_name} | STATUS: {status} "
+        f"| DURATION: {duration_seconds:.2f}s ==="
+        )
