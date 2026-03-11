@@ -18,6 +18,11 @@ class LogLevelType(StrEnum):
     WARNING = "warning"
     ERROR = "error"
 
+INDENTATION = {
+    LogActionType.FLOW: "  ",
+    LogActionType.STEP: "    "
+}
+
 def make_log_action(logger: Logger, action: LogActionType):
     def log_action(description: str | Callable[..., str], level: LogLevelType = LogLevelType.INFO):
         def decorator(func):
@@ -37,11 +42,12 @@ def make_log_action(logger: Logger, action: LogActionType):
                     msg = description
 
                 # Run function
+                indent = INDENTATION.get(action, "")
                 try:
-                    logger.log(level.upper(), f"[{action.upper()}]: {msg}")
+                    logger.log(level.upper(), f"{indent}{action.upper()}: {msg}")
                     return func(*args, **kwargs)
                 except Exception as e:
-                    logger.error(f"[{action.upper()} FAILED] {msg} → {e}")
+                    logger.error(f"{indent}{action.upper()} FAILED {msg} → {e}")
                     raise
             return wrapper
         return decorator
