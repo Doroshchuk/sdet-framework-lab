@@ -24,7 +24,7 @@ class BasePage:
     @log_step(lambda self, element, **_: f"Clicking {element}.")
     def click(self, element: UiElement) -> Self:
         """Click a UiElement.locator."""
-        
+
         element.locator.click()
         return self
 
@@ -35,10 +35,13 @@ class BasePage:
         element.locator.fill(value)
         return self
 
-    @log_step(lambda self, element, timeout_seconds=5, **_: f"Waiting for {element} to be visible.", level=LogLevelType.DEBUG)
+    @log_step(
+        lambda self, element, timeout_seconds=5, **_: f"Waiting for {element} to be visible.",
+        level=LogLevelType.DEBUG,
+    )
     def wait_until_visible(self, element: UiElement, timeout_seconds: int = 5) -> Self:
         """Wait for a UiElement.locator to be visible."""
-        
+
         timeout_milliseconds = timeout_seconds * 1000
         element.locator.wait_for(state="visible", timeout=timeout_milliseconds)
         return self
@@ -50,10 +53,12 @@ class BasePage:
         expect(element.locator).to_be_visible()
         return self
 
-    @log_step(lambda self, path="", **_: f"Asserting page`s url is {self.base_url}{path}.")
+    @log_step(
+        lambda self, path="", **_: f"Asserting page`s url is {self.base_url}{path}."
+    )
     def assert_url(self, path: str = "") -> Self:
         """Assert a page`s url."""
-        
+
         url = f"{self.base_url}{path}"
         expect(self.page).to_have_url(url)
         return self

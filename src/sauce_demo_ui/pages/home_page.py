@@ -19,8 +19,8 @@ class HomePage(BasePage):
     @property
     def login_link(self) -> UiElement:
         return UiElement(
-            locator=self.page.get_by_role(role="link", name="Log In"), 
-            description="Log In link"
+            locator=self.page.get_by_role(role="link", name="Log In"),
+            description="Log In link",
         )
 
     @log_step("Navigating to login page via link on the home page.")

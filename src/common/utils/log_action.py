@@ -7,9 +7,11 @@ from enum import StrEnum
 if TYPE_CHECKING:
     from loguru import Logger
 
+
 class LogActionType(StrEnum):
     FLOW = "flow"
     STEP = "step"
+
 
 class LogLevelType(StrEnum):
     TRACE = "trace"
@@ -18,13 +20,14 @@ class LogLevelType(StrEnum):
     WARNING = "warning"
     ERROR = "error"
 
-INDENTATION = {
-    LogActionType.FLOW: "  ",
-    LogActionType.STEP: "    "
-}
+
+INDENTATION = {LogActionType.FLOW: "  ", LogActionType.STEP: "    "}
+
 
 def make_log_action(logger: Logger, action: LogActionType):
-    def log_action(description: str | Callable[..., str], level: LogLevelType = LogLevelType.INFO):
+    def log_action(
+        description: str | Callable[..., str], level: LogLevelType = LogLevelType.INFO
+    ):
         def decorator(func):
             @wraps(func)
             def wrapper(*args, **kwargs):
@@ -37,7 +40,7 @@ def make_log_action(logger: Logger, action: LogActionType):
                             f"[{action.upper()}] Message builder failed for {func.__name__}: {e}. "
                             "Falling back to function name."
                         )
-                        msg = f"{func.__name__}()"     # fallback
+                        msg = f"{func.__name__}()"  # fallback
                 else:
                     msg = description
 
@@ -49,6 +52,9 @@ def make_log_action(logger: Logger, action: LogActionType):
                 except Exception as e:
                     logger.error(f"{indent}{action.upper()} FAILED {msg} → {e}")
                     raise
+
             return wrapper
+
         return decorator
+
     return log_action

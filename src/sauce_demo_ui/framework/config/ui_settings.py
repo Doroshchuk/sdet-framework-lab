@@ -7,6 +7,7 @@ class Viewport(BaseModel):
     width: int = 1920
     height: int = 1080
 
+
 class UiSettings(BaseModel):
     env: EnvironmentEnum = EnvironmentEnum.LOCAL
     base_url: AnyHttpUrl

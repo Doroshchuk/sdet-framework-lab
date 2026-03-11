@@ -5,6 +5,7 @@ class EnvironmentEnum(Enum):
     LOCAL = "local"
     CI = "ci"
 
+
 class SettingsTypeEnum(Enum):
     UI = "UI"
     API = "API"

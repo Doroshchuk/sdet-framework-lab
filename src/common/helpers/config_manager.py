@@ -6,18 +6,19 @@ from typing import Callable, TypeVar, cast
 
 SettingsType = TypeVar("SettingsType")
 
+
 class ConfigManager:
     _settings: dict[SettingsTypeEnum, object] = {}
 
     @classmethod
     def load(
-        cls, 
+        cls,
         *,
         env_var: str,
         default_path: str,
         settings_type: SettingsTypeEnum,
-        parser: Callable[[dict], SettingsType]
-        ) -> SettingsType:
+        parser: Callable[[dict], SettingsType],
+    ) -> SettingsType:
         if settings_type in cls._settings:
             return cast(SettingsType, cls._settings[settings_type])
 

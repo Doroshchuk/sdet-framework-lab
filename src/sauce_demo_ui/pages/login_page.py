@@ -21,7 +21,7 @@ class LoginPage(BasePage):
     def email_input(self) -> UiElement:
         return UiElement(
             locator=self.page.get_by_label("Email Address"),
-            description="Email Address input"
+            description="Email Address input",
         )
 
     @log_step("Asserting login page is loaded.")
